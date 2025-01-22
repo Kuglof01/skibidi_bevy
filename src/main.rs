@@ -1,65 +1,50 @@
-use std::slice::Windows;
-use bevy::app;
 use bevy::prelude::*;
-use bevy::window::PrimaryWindow;
-/*
+
 fn main() {
-    App::new().add_startup_system(setup)
-        .add_system(print_names)
-        .run()
-}
-pub fn setup(mut commands: Commands) {
-    commands.spawn( Person {
-        name: "Alice".to_string(),
-
-    });
+    App::new().add_plugins(DefaultPlugins).add_systems(Startup, (spawn_planet, spawn_light, spawn_camera)).run();
 }
 
-pub fn print_names(personquery: Query<&Person>) {
-    for person in personquery.iter() {
-        println!("Name: {}", person.name);
-    }
+fn spawn_camera(mut commands: Commands) {
+    let camera = Camera3dBundle {
+        transform: Transform::from_xyz(0.0,0.0,15.0),
+        ..default()
+    };
+    commands.spawn(camera);
 }
-#[derive(Component)]
-pub struct Person {
-    pub name: String,
-}
-
- */
-fn main() {
-    App::new().add_plugins(DefaultPlugins)
-        .add_startup_system(spawn_camera)
-        .add_startup_system(spawn_player)
-        .run();
-}
-#[derive(Component)]
-pub struct Player {}
-
-pub fn spawn_player(
+fn spawn_light(
     mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>,
-    asset_server: Res<AssetServer>,
-    ){
-let window = window_query.get_single().unwrap();
-
-    commands.spawn(
-        (
-            SpriteBundle{
-                transform: Transform::from_xyz(window.width() / 2.0,window.height() / 2.0, 0.0),
-                texture:asset_server.load("sprites/ball_blue_large.png"),
-                    ..default()
-
-
-            },
-            Player {},
-            )
-    );
+) {
+    let light = PointLightBundle {
+        point_light: PointLight {
+            intensity: 30000.0,
+            ..default()
+        },
+        transform: Transform::from_xyz(-2.0, 2.5, 5.0),
+        ..default()
+    };
+    commands.spawn(light);
 }
-pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
-    let window = window_query.get_single().unwrap();
 
-    commands.spawn(Camera2dBundle{
-        transform: Transform::from_xyz(window.width() / 2.0,window.height() / 2.0, 0.0),
+
+fn spawn_planet(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
+) {
+    let planet_material = materials.add(StandardMaterial {
+        base_color_texture: Some(asset_server.load("sprites/texture.jpg")),
+        ..default()
+    });
+
+    commands.spawn(PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::UVSphere {
+            radius: 1.0,
+            sectors: 32,
+            stacks: 16,
+        })),
+        transform: Transform::from_xyz(0.0, 0.0, 0.0),
+        material: planet_material,
         ..default()
     });
 }
