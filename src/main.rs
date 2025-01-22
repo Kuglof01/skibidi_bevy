@@ -31,6 +31,7 @@ fn spawn_planet(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     asset_server: Res<AssetServer>,
+
 ) {
     let planet_material = materials.add(StandardMaterial {
         base_color_texture: Some(asset_server.load("sprites/texture.jpg")),
