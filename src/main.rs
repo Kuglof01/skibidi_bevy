@@ -18,24 +18,24 @@ fn setup(
 
     commands.spawn((
         PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Cube { size: 100.0 })), // Large cube
+            mesh: meshes.add(Mesh::from(shape::Cube { size: 100.0 })),
             material: materials.add(StandardMaterial {
-                base_color_texture: Some(asset_server.load("textures/skybox.png")), // Skybox texture
-                unlit: true, // No lighting effects
+                base_color_texture: Some(asset_server.load("sprites/skybox.png")),
+                unlit: true,
                 ..default()
             }),
-            transform: Transform::from_scale(Vec3::new(-1.0, -1.0, -1.0)), // Inverted normals
+            transform: Transform::from_scale(Vec3::new(-1.0, -1.0, -1.0)),
             ..default()
         },
     ));
 
-    // Camera
+
     commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(0.0, 0.0, 7.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..default()
     });
 
-    // Light
+
     commands.spawn(PointLightBundle {
         point_light: PointLight {
             intensity: 9000.0,
@@ -46,7 +46,6 @@ fn setup(
         ..default()
     });
 
-    // Sphere with texture
     commands.spawn(PbrBundle {
         mesh: meshes.add(Mesh::from(shape::UVSphere {
             radius: 1.0,
@@ -54,12 +53,12 @@ fn setup(
             stacks: 16,
         })),
         transform: Transform {
-            translation: Vec3::new(0.0, 1.0, 0.0), // Place at the sphere's surface
-            rotation: Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2), // Align to the sphere's top
+            translation: Vec3::new(0.0, 1.0, 0.0),
+            rotation: Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2),
             ..default()
         },
         material: materials.add(StandardMaterial {
-            base_color_texture: Some(asset_server.load("sprites/texture.png")),
+            base_color_texture: Some(asset_server.load("sprites/walter.png")),
             perceptual_roughness: 0.9,
             metallic: 0.0,
             ..default()
