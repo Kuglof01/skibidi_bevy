@@ -1,9 +1,10 @@
 use bevy::prelude::*;
+use image::{ImageBuffer, RgbImage, Rgb};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_startup_system(setup)
+        .add_systems(Startup, setup)
         .run();
 }
 
@@ -53,7 +54,7 @@ fn setup(
             stacks: 16,
         })),
         transform: Transform {
-            translation: Vec3::new(0.0, 1.0, 0.0),
+            translation: Vec3::new(0.0, 0.0, 0.0),
             rotation: Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2),
             ..default()
         },
